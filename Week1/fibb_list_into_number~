@@ -1,0 +1,19 @@
+def fibonaci(n):
+	fibs=[1,1,2]
+	output=[]
+	final=0
+	for x in range(0,n):
+		fibs.append(fibs[-1]+fibs[-2])
+		output.append(fibs[x])
+	for x in range(0,len(output)):
+		if output[x]>9:
+			final+=output[x]*10**int(len(output)-(x))
+		else:
+			final+=output[x]*10**int(len(output)-(x+1))
+
+	return final
+
+
+
+n=int(input("Enter n:"))
+print((fibonaci(n)))

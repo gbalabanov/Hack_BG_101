@@ -1,0 +1,118 @@
+from __future__ import division
+
+def find_common(a, b):
+    temp = 0
+    if a > b:
+        temp = a + 1
+    if b > a:
+        temp = b + 1
+    while (temp % a != 0) or (temp % b != 0):
+        temp += 1
+    return temp
+
+
+class Fraction:
+
+    def __init__(self, numerator, denominator):
+        self.numerator = numerator
+        self.denominator = denominator
+
+    def __str__(self):
+        return "{} / {}".format(self.numerator, self.denominator)
+
+    def __repr__(self):
+        return self.__str__()
+
+    def __add__(self, other):
+        top = 0
+        bot = 0
+        self1 = self.numerator
+        self2 = self.denominator
+        other1 = other.numerator
+        other2 = other.denominator
+        temp = 2
+        if self.denominator == other.denominator:
+            top = self1 + other1
+            bot = other2
+        if (self2 > other2) and (self2 % other2) == 0:
+            other1 *= self2 // other2
+            top = self1 + other1
+            bot = self2
+        if (other2 > self2) and (other2 % self2) == 0:
+            self1 *= other2 // self2
+            top = self1 + other1
+            bot = other2
+        if self2 % other2 != 0 and other2 % self2 != 0:
+            self1 *= find_common(self2,
+                                 other2) // self2
+            other1 *= find_common(self2,
+                                  other2) // other2
+            top = self1 + other1
+            bot = find_common(self2, other2)
+        for x in range(1, top):
+            while top % temp == 0 and bot % temp == 0:
+                top //= temp
+                bot //= temp
+            temp += 1
+        return Fraction(top, bot)
+
+    def __sub__(self, other):
+        top = 0
+        bot = 0
+        self1 = self.numerator
+        self2 = self.denominator
+        other1 = other.numerator
+        other2 = other.denominator
+        temp = 2
+        if self.denominator == other.denominator:
+            top = self1 - other1
+            bot = other2
+        if (self2 > other2) and (self2 % other2) == 0:
+            other1 *= self2 // other2
+            top = self1 - other1
+            bot = self2
+        if (other2 > self2) and (other2 % self2) == 0:
+            self1 *= other2 // self2
+            top = self1 - other1
+            bot = other2
+        if self2 % other2 != 0 and other2 % self2 != 0:
+            self1 *= find_common(self2,
+                                 other2) // self2
+            other1 *= find_common(self2,
+                                  other2) // other2
+            top = self1 - other1
+            bot = find_common(self2, other2)
+        for x in range(1, top):
+            while top % temp == 0 and bot % temp == 0:
+                top //= temp
+                bot //= temp
+            temp += 1
+        if top == 0 or bot == 0:
+            top = 0
+            bot = 0
+        return Fraction(top, bot)
+
+    def __mul__(self, other):
+        top = self.numerator * other.numerator
+        bot = self.denominator * other.denominator
+        temp = 2
+        for x in range(1, top):
+            while top % temp == 0 and bot % temp == 0:
+                top //= temp
+                bot //= temp
+            temp += 1
+        return Fraction(top, bot)
+
+    def __eq__(self, other):
+        if self.numerator > self.denominator and other.numerator > other.denominator:
+            return(self.numerator / self.denominator == other.numerator / other.denominator)
+        if self.denominator > self.numerator and other.denominator > other.numerator:
+            return(self.denominator / self.numerator == other.denominator / other.numerator)
+        else:
+            return False
+
+
+
+a = Fraction(2,4)
+b=Fraction(2,4)
+print(a+b)
