@@ -3,6 +3,7 @@ from bs4 import BeautifulSoup
 import re
 from Histogram import Histogram
 import matplotlib.pyplot as plt
+import json
 
 
 url = "http://register.start.bg"
@@ -17,20 +18,24 @@ symbols = ["/", "-", "\\"]
 for row in soup.find_all("a"):
     if isinstance(row.get("href"), str) and row.get("href")[:4] == "link":
         ids.append(row.get("href")[-5:])
-for x in range(40, 50):
+for x in range(30, 40):
     try:
-        rr = requests.get(
-            custom_url + str(ids[x]), headers=custom_header, timeout=1)
-        server = dict(rr.headers)["server"]
-        print (server)
+        rr = requests.head(
+            custom_url + str(ids[x]), headers=custom_header, timeout = 2, allow_redirects = True)
+        server = (dict(rr.headers)["server"])
+        print(server)
         if "/" in server:
             position = server.find("/")
+            h.add_server(server[:position])
+        elif "-" in server:
+            position = server.find("-")
             h.add_server(server[:position])
         else:
             h.add_server(server)
     except Exception:
         print("cant connect to site !")
 
+print(h.get_dict())
 h = h.get_dict()
 keys = list(h.keys())
 values = list(h.values())
