@@ -18,7 +18,7 @@ symbols = ["/", "-", "\\"]
 for row in soup.find_all("a"):
     if isinstance(row.get("href"), str) and row.get("href")[:4] == "link":
         ids.append(row.get("href")[-5:])
-for x in range(30, 40):
+for x in range(0, 400):
     try:
         rr = requests.head(
             custom_url + str(ids[x]), headers=custom_header, timeout = 2, allow_redirects = True)
