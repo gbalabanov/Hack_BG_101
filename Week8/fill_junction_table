@@ -1,0 +1,18 @@
+import sqlite3
+import requests
+
+conn = sqlite3.connect("School.db")
+cursor = conn.cursor()
+
+r = requests.get("http://hackbulgaria.com/api/students/")
+insert_query ="INSERT INTO students_to_courses(student_id, course_id) VALUES(?,?)"
+for x in r.json():
+    if not x["courses"]:
+        continue
+    student_id = cursor.execute("Select id from Students where name=?", (x["name"], )).fetchone()[0]
+    for y in x["courses"]:
+        course_id = cursor.execute("Select id from Courses where name=?",(y["name"], )).fetchone()[0]
+        cursor.execute(insert_query,(student_id,course_id, ))
+conn.commit()
+conn.close()
+
