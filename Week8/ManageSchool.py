@@ -34,4 +34,4 @@ def list_students_courses():
         print(e)
         return False
 
-print(list_all_courses())
+print(list_students_courses())
